@@ -1,0 +1,1 @@
+Static site generator written in python following boot.dev course
