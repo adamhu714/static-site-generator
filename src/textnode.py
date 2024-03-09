@@ -12,9 +12,11 @@ class TextNode:
         self.url = url # The URL of the link or image, if the text is a link.
 
     def __eq__(self, other) -> bool:
-        return (self.text == other.text
+        return (
+            self.text == other.text
             and self.text_type == other.text_type
-            and self.url == other.url)
+            and self.url == other.url
+        )
     
     def __repr__(self) -> str:
         return f"TextNode({self.text}, {self.text_type}, {self.url})"
