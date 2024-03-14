@@ -38,5 +38,5 @@ def text_node_to_html_node(textnode: TextNode) -> LeafNode:
         return LeafNode("img", "", {"src": textnode.url, "alt": textnode.text})
     raise ValueError(f"Invalid text type: {textnode.text_type}")
 
-def split_nodes_delimiter():
+def split_nodes_delimiter(old_nodes, delimiter, text_type):
     pass
