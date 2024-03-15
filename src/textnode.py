@@ -39,4 +39,18 @@ def text_node_to_html_node(textnode: TextNode) -> LeafNode:
     raise ValueError(f"Invalid text type: {textnode.text_type}")
 
 def split_nodes_delimiter(old_nodes, delimiter, text_type):
-    pass
+    new_nodes = []
+    for node in old_nodes:
+        if node.text_type != text_type_text:
+            continue
+        splitNodeText = node.text.split(delimiter)
+        if len(splitNodeText) % 2 == 0:
+            raise ValueError(f"Invalid Markdown syntax: {node.text}")
+        i = 0
+        for newNodeText in splitNodeText:
+            i += 1
+            if i % 2 == 1:
+                new_nodes.append(TextNode(newNodeText, text_type_text))
+            else:
+                new_nodes.append(TextNode(newNodeText, text_type))
+    return new_nodes
