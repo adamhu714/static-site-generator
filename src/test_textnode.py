@@ -1,6 +1,7 @@
 import unittest
 
 from textnode import (TextNode,
+                      split_nodes_delimiter,
                       text_type_bold,
                       text_type_code,
                       text_type_image,
@@ -34,6 +35,15 @@ class TestTextNode(unittest.TestCase):
         node = TextNode("This is a text node", text_type_text, "https://www.boot.dev")
         self.assertEqual(
             "TextNode(This is a text node, text, https://www.boot.dev)", repr(node)
+        )
+
+    def test_split_nodes_delimiter(self):
+        node = TextNode("This is text with a **bolded** word", text_type_text)
+        self.assertEqual(split_nodes_delimiter([node], "**", text_type_bold), [
+            TextNode("This is text with a ", "text"),
+            TextNode("bolded", "bold"),
+            TextNode(" word", "text"),
+        ]
         )
 
 
