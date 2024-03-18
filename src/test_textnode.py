@@ -37,7 +37,7 @@ class TestTextNode(unittest.TestCase):
             "TextNode(This is a text node, text, https://www.boot.dev)", repr(node)
         )
 
-    def test_split_nodes_delimiter(self):
+    def test_split_nodes_delimiter_bold(self):
         node = TextNode("This is text with a **bolded** word", text_type_text)
         self.assertEqual(split_nodes_delimiter([node], "**", text_type_bold), [
             TextNode("This is text with a ", "text"),
@@ -46,6 +46,13 @@ class TestTextNode(unittest.TestCase):
         ]
         )
 
+    def test_split_nodes_delimiter_even_nodes(self):
+        node = TextNode("This is text with a **bolded word", text_type_text)
+        try:
+            split_nodes_delimiter([node], "**", text_type_bold)
+            raise TypeError("Should return error")
+        except ValueError:
+            pass
 
 if __name__ == "__main__":
     unittest.main()
