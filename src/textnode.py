@@ -1,4 +1,5 @@
 from htmlnode import LeafNode
+import re
 
 text_type_text = "text"
 text_type_bold = "bold"
@@ -54,3 +55,25 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
             else:
                 new_nodes.append(TextNode(newNodeText, text_type))
     return new_nodes
+
+def extract_markdown_images(text: str) -> list:
+    matches = re.findall(r"!\[(.*?)\]\((.*?)\)", text)
+    listOfTuples = []
+    for match in matches:
+        altTextList = re.findall(r"!\[(.*?)\]", match)
+        altText = altTextList[0][1:len(altTextList[0]) - 1]
+        linkTextList = re.findall(r"!\((.*?)\)", match)
+        linkText = linkTextList[0][1:len(linkTextList[0]) - 1]
+        listOfTuples.append((altText, linkText))
+    return listOfTuples
+    
+def extract_markdown_link(text: str) -> list:
+    matches = re.findall(r"(?!)\[(.*?)\]\((.*?)\)", text)
+    listOfTuples = []
+    for match in matches:
+        altTextList = re.findall(r"!\[(.*?)\]", match)
+        altText = altTextList[0][1:len(altTextList[0]) - 1]
+        linkTextList = re.findall(r"!\((.*?)\)", match)
+        linkText = linkTextList[0][1:len(linkTextList[0]) - 1]
+        listOfTuples.append((altText, linkText))
+    return listOfTuples
