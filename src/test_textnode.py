@@ -2,6 +2,8 @@ import unittest
 
 from textnode import (TextNode,
                       split_nodes_delimiter,
+                      extract_markdown_images,
+                      extract_markdown_link,
                       text_type_bold,
                       text_type_code,
                       text_type_image,
@@ -53,6 +55,11 @@ class TestTextNode(unittest.TestCase):
             raise TypeError("Should return error")
         except ValueError:
             pass
+    
+    def test_extract_markdown_images(self):
+        text = "[image9](https://i.imgur.com/zjjcJKZ.png) This is text with an ![image](https://i.imgur.com/zjjcJKZ.png) and ![another](https://i.imgur.com/dfsdkjfd.png)"
+        self.assertEqual(extract_markdown_images(text), [("image", "https://i.imgur.com/zjjcJKZ.png"), ("another", "https://i.imgur.com/dfsdkjfd.png")])
+
 
 if __name__ == "__main__":
     unittest.main()
