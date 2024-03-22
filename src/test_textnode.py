@@ -60,6 +60,10 @@ class TestTextNode(unittest.TestCase):
         text = "[image9](https://i.imgur.com/zjjcJKZ.png) This is text with an ![image](https://i.imgur.com/zjjcJKZ.png) and ![another](https://i.imgur.com/dfsdkjfd.png)"
         self.assertEqual(extract_markdown_images(text), [("image", "https://i.imgur.com/zjjcJKZ.png"), ("another", "https://i.imgur.com/dfsdkjfd.png")])
 
+    def test_extract_markdown_link(self):
+        text = "[image9](https://i.imgur.com/zjjcJKZ.png) This is text with an ![image](https://i.imgur.com/zjjcJKZ.png) and ![another](https://i.imgur.com/dfsdkjfd.png)"
+        self.assertEqual(extract_markdown_link(text), [("image9", "https://i.imgur.com/zjjcJKZ.png")])
+
 
 if __name__ == "__main__":
     unittest.main()
