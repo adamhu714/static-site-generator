@@ -1,17 +1,20 @@
 import unittest
 
-from textnode import (TextNode,
-                      split_nodes_delimiter,
-                      extract_markdown_images,
-                      extract_markdown_link,
-                      split_nodes_image,
-                      split_nodes_link,
-                      text_type_bold,
-                      text_type_code,
-                      text_type_image,
-                      text_type_italic,
-                      text_type_link,
-                      text_type_text)
+from textnode import (
+    TextNode,
+    split_nodes_delimiter,
+    extract_markdown_images,
+    extract_markdown_link,
+    split_nodes_image,
+    split_nodes_link,
+    text_to_textnodes,
+    text_type_bold,
+    text_type_code,
+    text_type_image,
+    text_type_italic,
+    text_type_link,
+    text_type_text
+)
 
 
 class TestTextNode(unittest.TestCase):
@@ -108,6 +111,24 @@ class TestTextNode(unittest.TestCase):
                 TextNode(
                     "link1", text_type_link, "https://i.imgur.com/3elNhQu.png"
                 ),
+            ]
+        )
+    
+    def test_text_to_textnodes(self):
+        test = "This is **text** with an *italic* word and a `code block` and an ![image](https://i.imgur.com/zjjcJKZ.png) and a [link](https://boot.dev)"
+        self.assertEqual(
+            text_to_textnodes(test), 
+            [
+                TextNode("This is ", text_type_text),
+                TextNode("text", text_type_bold),
+                TextNode(" with an ", text_type_text),
+                TextNode("italic", text_type_italic),
+                TextNode(" word and a ", text_type_text),
+                TextNode("code block", text_type_code),
+                TextNode(" and an ", text_type_text),
+                TextNode("image", text_type_image, "https://i.imgur.com/zjjcJKZ.png"),
+                TextNode(" and a ", text_type_text),
+                TextNode("link", text_type_link, "https://boot.dev"),
             ]
         )
 
