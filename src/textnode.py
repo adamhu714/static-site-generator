@@ -79,3 +79,20 @@ def split_nodes_image(old_nodes) -> list:
         if splitText[-1] != "":
             new_nodes.append(TextNode(splitText[-1], text_type_text))
     return new_nodes
+
+def split_nodes_link(old_nodes) -> list:
+    new_nodes = []
+    for old_node in old_nodes:
+        if old_node.text_type != text_type_text:
+            new_nodes.append(old_node)
+            continue
+        links = extract_markdown_link(old_node.text)
+        splitText = [old_node.text]
+        for link_tup in links:
+            splitText = old_node.text.split(f"[{link_tup[0]}]({link_tup[1]})", 1)
+            if splitText[0] != "":
+                new_nodes.append(TextNode(splitText[0], text_type_text))
+            new_nodes.append(TextNode(link_tup[0], text_type_link, link_tup[1]))
+        if splitText[-1] != "":
+            new_nodes.append(TextNode(splitText[-1], text_type_text))
+    return new_nodes
