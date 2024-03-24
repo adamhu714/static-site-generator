@@ -1,9 +1,24 @@
+from htmlnode import ParentNode
+
+from textnode import (
+    text_node_to_html_node,
+    text_to_textnodes,
+)
+
 block_type_paragraph = "paragraph"
 block_type_heading = "heading"
 block_type_code = "code"
 block_type_quote = "quote"
 block_type_unordered_list = "unordered_list"
 block_type_ordered_list = "ordered_list"
+
+def markdown_to_html_node(markdown: str) -> ParentNode:
+    blocks = markdown_to_blocks(markdown)
+    blocks_html_nodes = []
+    for block in blocks:
+        blocks_html_nodes.append(block_to_html_node(block))
+    return ParentNode("div", blocks_html_nodes)
+    
 
 def markdown_to_blocks(text: str) -> list:
     strings = text.split("\n\n")
@@ -66,26 +81,61 @@ def is_heading(text):
             if text[i+1] != "#":
                 return False
     return False
-    # if text[:2] == "# ":
-    #     return True
-    # if len(text) == 2:
-    #     return False
-    # if text[:3] == "## ":
-    #     return True
-    # if len(text) == 3:
-    #     return False
-    # if text[:4] == "### ":
-    #     return True
-    # if len(text) == 4:
-    #     return False
-    # if text[:5] == "#### ":
-    #     return True
-    # if len(text) == 5:
-    #     return False
-    # if text[:6] == "##### ":
-    #     return True
-    # if len(text) == 6:
-    #     return False
-    # if text[:7] == "###### ":
-    #     return True
-    # return False
+
+def paragraph_block_to_html_node(block: str) -> ParentNode:
+    textnodes = text_to_textnodes(block)
+    inline_children = [text_node_to_html_node(node) for node in textnodes]
+    return ParentNode("p", inline_children)
+
+def heading_block_to_html_node(block: str) -> ParentNode:
+    for i in range(1, len(block)):
+        if block[i] == " ":
+            num_of_hashes = i
+            break
+    textnodes = text_to_textnodes(block[num_of_hashes+1:])
+    inline_children = [text_node_to_html_node(node) for node in textnodes]
+    return ParentNode(f"h{num_of_hashes}", inline_children)
+
+def code_block_to_html_node(block: str) -> ParentNode:
+    textnodes = text_to_textnodes(block[3:-3])
+    inline_children = [text_node_to_html_node(node) for node in textnodes]
+    return ParentNode("pre", [ParentNode("code", inline_children)])
+
+def quote_block_to_html_node(block: str) -> ParentNode:
+    stripped = "\n".join([line[1:].strip() for line in block.split("\n")])
+    textnodes = text_to_textnodes(stripped)
+    inline_children = [text_node_to_html_node(node) for node in textnodes]
+    return ParentNode("blockquote", inline_children)
+
+def unordered_list_block_to_html_node(block: str) -> ParentNode:
+    stripped_lists = [line[1:].strip() for line in block.split("\n")]
+    list_children = []
+    for item in stripped_lists:
+        textnodes = text_to_textnodes(item)
+        inline_children = [text_node_to_html_node(node) for node in textnodes]
+        list_children.append(ParentNode("li", inline_children))
+    return ParentNode("ul", list_children)
+
+def ordered_list_block_to_html_node(block: str) -> ParentNode:
+    stripped_lists = [line[2:].strip() for line in block.split("\n")]
+    list_children = []
+    for item in stripped_lists:
+        textnodes = text_to_textnodes(item)
+        inline_children = [text_node_to_html_node(node) for node in textnodes]
+        list_children.append(ParentNode("li", inline_children))
+    return ParentNode("ol", list_children)
+
+def block_to_html_node(block: str) -> ParentNode:
+    block_type = block_to_block_type(block)
+    if block_type == block_type_paragraph:
+        return paragraph_block_to_html_node(block)
+    if block_type == block_type_heading:
+        return heading_block_to_html_node(block)
+    if block_type == block_type_code:
+        return code_block_to_html_node(block)
+    if block_type == block_type_quote:
+        return quote_block_to_html_node(block)
+    if block_type == block_type_unordered_list:
+        return unordered_list_block_to_html_node(block)
+    if block_type == block_type_ordered_list:
+        return ordered_list_block_to_html_node(block)
