@@ -92,11 +92,17 @@ class TestBlocks(unittest.TestCase):
                 ParentNode("li", [LeafNode(None, "This is a list")]),
                 ParentNode("li", [LeafNode(None, "with items")]),
             ]),
-            ParentNode("p", [LeafNode(None, "1 This is a list\n2 without dots")]),
-            ParentNode("p", [LeafNode(None, "1. This is a list\n2. with items\n2. hi")]),
-            ParentNode("pre", [ParentNode("code", [
-                LeafNode(None, "This is code\n with lines")
-            ])]),
+            ParentNode("p", [
+                LeafNode(None, "1 This is a list\n2 without dots")
+            ]),
+            ParentNode("p", [
+                LeafNode(None, "1. This is a list\n2. with items\n2. hi")
+            ]),
+            ParentNode("pre", [
+                ParentNode("code", [
+                    LeafNode(None, "This is code\n with lines"),
+                ])
+            ]),
             ParentNode("h3", [
                 LeafNode(None, "headings fdsag")
             ]),
@@ -108,13 +114,70 @@ class TestBlocks(unittest.TestCase):
             ]),
         ]
         for i in range(len(texts)):
-            print()
-            print(block_to_html_node(texts[i]))
-            print(expected[i])
             self.assertEqual(
             block_to_html_node(texts[i]),
             expected[i]
         )
 
+    def test_markdown_to_html_node(self):
+        texts = [
+            "This is **bolded** paragraph\n \n\n\n \n\n\n\nThis is another paragraph with *italic* text and `code` here\nThis is the same paragraph on a new line",
+            "* This is a list\n* with items\n\n1. This is a list\n2. with items  \n\n 1 This is a list\n2 without dots",
+            "1. This is a list\n2. with items\n2. hi\n\n```This is code\n with lines```\n\n\n### headings fdsag\n\n\n# # grijsgij\n\n\n\n\n\n>grwijgi4w\n>fnrwugnruwg\n>girjigr"
+        ]  
+        expected = [
+            ParentNode("div", [
+                ParentNode("p", [
+                    LeafNode(None, "This is "),
+                    LeafNode("b", "bolded"),
+                    LeafNode(None, " paragraph"),
+                ]),
+                ParentNode("p", [
+                    LeafNode(None, "This is another paragraph with "),
+                    LeafNode("i", "italic"),
+                    LeafNode(None, " text and "),
+                    LeafNode("code", "code"),
+                    LeafNode(None, " here\nThis is the same paragraph on a new line"),
+                ]),
+            ]),
+            ParentNode("div", [
+                ParentNode("ul", [
+                    ParentNode("li", [LeafNode(None, "This is a list")]),
+                    ParentNode("li", [LeafNode(None, "with items")]),
+                ]),
+                ParentNode("ol", [
+                    ParentNode("li", [LeafNode(None, "This is a list")]),
+                    ParentNode("li", [LeafNode(None, "with items")]),
+                ]),
+                ParentNode("p", [
+                    LeafNode(None, "1 This is a list\n2 without dots")
+                ]),
+            ]),
+            ParentNode("div", [
+                ParentNode("p", [
+                    LeafNode(None, "1. This is a list\n2. with items\n2. hi")
+                ]),
+                ParentNode("pre", [
+                    ParentNode("code", [
+                        LeafNode(None, "This is code\n with lines")
+                    ])
+                ]),
+                ParentNode("h3", [
+                    LeafNode(None, "headings fdsag")
+                ]),
+                ParentNode("h1", [
+                    LeafNode(None, "# grijsgij")
+                ]),
+                ParentNode("blockquote", [
+                    LeafNode(None, "grwijgi4w\nfnrwugnruwg\ngirjigr")
+                ]),
+            ]),
+        ]
+        for i in range(len(texts)):
+            self.assertEqual(
+            markdown_to_html_node(texts[i]),
+            expected[i]
+        )
+            
 if __name__ == "__main__":
     unittest.main()
