@@ -2,8 +2,21 @@ import os
 import shutil
 from blocks import markdown_to_html_node, markdown_to_blocks, block_to_block_type, block_type_heading
 
+def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
+    contents = os.listdir(dir_path_content)
+    for content in contents:
+        item = os.path.join(dir_path_content, content)
+        dest = os.path.join(dest_dir_path, content)
+        if os.path.isdir(item):
+            generate_pages_recursive(item, template_path, dest)
+        if item.lower().endswith(('.md', '.markdown')):
+            base_name, _ = os.path.splitext(dest)
+            dest = base_name + ".html"
+            generate_page(item, template_path, dest)
+
 def generate_page(from_path, template_path, dest_path):
     print(f"Generating page from {from_path} to {dest_path} using {template_path}")
+    
     with open(from_path, "r") as markdown_file:
         markdown = markdown_file.read()
         md_html = markdown_to_html_node(markdown).to_html()
