@@ -68,7 +68,7 @@ def block_to_block_type(text: str) -> str:
     return block_type_paragraph
 
 
-def is_heading(text):
+def is_heading(text) -> bool:
     if len(text) == 1:
         return False
     if text[0] == "#":
@@ -97,7 +97,7 @@ def heading_block_to_html_node(block: str) -> ParentNode:
     return ParentNode(f"h{num_of_hashes}", inline_children)
 
 def code_block_to_html_node(block: str) -> ParentNode:
-    textnodes = text_to_textnodes(block[3:-3])
+    textnodes = text_to_textnodes(block[3:-3].strip())
     inline_children = [text_node_to_html_node(node) for node in textnodes]
     return ParentNode("pre", [ParentNode("code", inline_children)])
 
@@ -137,5 +137,4 @@ def block_to_html_node(block: str) -> ParentNode:
         return quote_block_to_html_node(block)
     if block_type == block_type_unordered_list:
         return unordered_list_block_to_html_node(block)
-    if block_type == block_type_ordered_list:
-        return ordered_list_block_to_html_node(block)
+    return ordered_list_block_to_html_node(block)

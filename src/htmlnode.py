@@ -1,3 +1,6 @@
+from turtle import st
+
+
 class HTMLNode:
     def __init__(self, tag=None, value=None, children=None, props=None) -> None:
         self.tag = tag # html tag
@@ -5,7 +8,7 @@ class HTMLNode:
         self.children = children # sub nodes
         self.props = props # tag attributes
 
-    def to_html(self):
+    def to_html(self) -> str:
         raise NotImplementedError
     
     def props_to_html(self) -> str:
@@ -24,7 +27,7 @@ class LeafNode(HTMLNode):
     def __init__(self, tag, value, props=None) -> None:
         super().__init__(tag, value, None, props)
 
-    def to_html(self):
+    def to_html(self) -> str:
         if self.value is None: 
             raise ValueError("Invalid HTML: no value")
         if self.tag is None:
@@ -34,7 +37,7 @@ class LeafNode(HTMLNode):
     def __repr__(self) -> str:
         return f"LeafNode({self.tag}, {self.value}, {self.props})"
     
-    def __eq__(self, other):
+    def __eq__(self, other) -> bool:
         if not isinstance(other, LeafNode):
             return False
         return self.tag == other.tag and self.value == other.value and self.props == other.props
@@ -43,7 +46,7 @@ class ParentNode(HTMLNode):
     def __init__(self, tag, children, props=None) -> None:
         super().__init__(tag, None, children, props)
 
-    def to_html(self):
+    def to_html(self) -> str:
         if self.tag is None:
             raise ValueError("Invalid HTML: no tag")
         if self.children is None:
@@ -56,7 +59,7 @@ class ParentNode(HTMLNode):
     def __repr__(self) -> str:
         return f"ParentNode({self.tag}, children: {self.children}, {self.props})"
     
-    def __eq__(self, other):
+    def __eq__(self, other) -> bool:
         if not isinstance(other, ParentNode):
             return False
         return self.tag == other.tag and self.children == other.children and self.props == other.props

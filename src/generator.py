@@ -1,11 +1,12 @@
 import os
 import shutil
-from blocks import markdown_to_html_node
+from blocks import markdown_to_html_node, markdown_to_blocks, block_to_block_type, block_type_heading
 
 def generate_page(from_path, template_path, dest_path):
     print(f"Generating page from {from_path} to {dest_path} using {template_path}")
-    with open(from_path, "r") as markdown:
-        md_html = markdown_to_html_node(markdown.read()).to_html()
+    with open(from_path, "r") as markdown_file:
+        markdown = markdown_file.read()
+        md_html = markdown_to_html_node(markdown).to_html()
         title = extract_title(markdown)
         
     with open(template_path, "r") as template:
@@ -14,14 +15,15 @@ def generate_page(from_path, template_path, dest_path):
 
     if not os.path.exists(os.path.dirname(dest_path)):
         os.makedirs(os.path.dirname(dest_path))
-        
+
     with open(dest_path, "w") as target:
         target.write(final_file)
 
 def extract_title(markdown: str) -> str:
-    for line in markdown.split("\n"):
-        if len(line) > 2 and line[:2] == "# ":
-            return line[2:]
+    blocks = markdown_to_blocks(markdown)
+    for block in blocks:
+        if block_to_block_type(block) == block_type_heading and block[:2] == "# ":
+            return block[2:]
     raise ValueError("markdown file requires at least one h1 header")
 
 def copy_static_dir():
