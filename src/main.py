@@ -1,8 +1,7 @@
-from textnode import TextNode
+from generator import copy_static_dir
 
 def main():
-    textNode = TextNode("This is a text node", "bold", "https://www.boot.dev")
-    print(textNode)
+    copy_static_dir()
 
 
 if __name__=="__main__" :
