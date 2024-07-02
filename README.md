@@ -54,6 +54,8 @@ To stop the script, press `Ctrl + C` in the terminal you ran it in.
 
 *[Back To Top](#static-site-generator-from-markdown)* <br>
 ## Unit Tests
+For effortless devlopment and maintenance, this project uses a high coverage of unit tests throughout development:
+![image](https://github.com/adamhu714/static-site-generator/assets/105497355/c35f6060-04d1-49e4-8568-e81d2c1ba0c1)
 
 
 *[Back To Top](#static-site-generator-from-markdown)* <br>
