@@ -33,5 +33,27 @@ From the project root directory, use the `main.sh` shell script to run the appli
 *[Back To Top](#static-site-generator-from-markdown)* <br>
 ## Example Demonstration
 
+Copy the example 'static' and 'content' directories to your workspace by running the following command in your project's root directory.
 
+```bash
+cp -r ./example/* .
+```
+
+Generate your webpages to a 'public' folder and serve them to port 8888 using the `main.sh` shell script. To do so run the following command in your project's root directory.
+
+```bash
+./main.sh
+```
+You can now view the generated pages at the following URLs:
+```
+http://localhost:8888
+http://localhost:8888/majesty/
+```
+
+To stop the script, press `Ctrl + C` in the terminal you ran it in.
+
+*[Back To Top](#static-site-generator-from-markdown)* <br>
 ## Unit Tests
+
+
+*[Back To Top](#static-site-generator-from-markdown)* <br>
