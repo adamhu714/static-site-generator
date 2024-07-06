@@ -24,7 +24,7 @@ The 'content' folder should contain all markdown files you would like to generat
 For more guidance on the 'static' and 'content' folders, please follow the example at [Example Demonstration](#example-demonstration) and study the contents of the example files.
 
 ### Running the Application
-From the project root directory, use the `main.sh` shell script to run the application and start your web server on port 8888:
+From the project's root directory, use the `main.sh` shell script to run the application and start your web server on port 8888:
 
 ```bash
 ./main.sh
